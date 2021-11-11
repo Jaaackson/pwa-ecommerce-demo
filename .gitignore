@@ -1,8 +1,4 @@
-# No Mac OS Finder layout files
-.DS_Store
-# No vi tempfiles
-*~
-# Skip dependencies and builds
-node_modules/
+node_modules
 dist/
-.vscode/
+.tmp
+app.yaml
