@@ -38,30 +38,12 @@ import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
 import nodemon from 'gulp-nodemon';
 import gulpLoadPlugins from 'gulp-load-plugins';
-import workboxBuild from 'workbox-build';
 
 const $ = gulpLoadPlugins();
 const bs = browserSync.create();
 
-// Inject a precache manifest into the service worker
-function buildSw() {
-  return workboxBuild.injectManifest({
-    swSrc: 'app/sw.js',
-    swDest: 'dist/sw.js',
-    globDirectory: 'dist',
-    globPatterns: [
-      'index.html',
-      'scripts/main.min.js',
-      'styles/main.css',
-      'images/*',
-      'images/touch/*'
-    ]
-  }).catch(err => {
-    console.log('Uh oh 😬', err);
-  });
-}
-
-gulp.task('buildSw', buildSw);
+// Write a task that injects a precache manifest into the service worker
+// TODO
 
 // Optimize images
 function images() {
@@ -71,7 +53,7 @@ function images() {
       interlaced: true
     }))
     .pipe(gulp.dest('dist/images'))
-    .pipe($.size({title: 'images'}));
+    .pipe($.size({ title: 'images' }));
 }
 
 function thirdPartyImages() {
@@ -81,7 +63,7 @@ function thirdPartyImages() {
       interlaced: true
     }))
     .pipe(gulp.dest('dist/images'))
-    .pipe($.size({title: 'product images'}));
+    .pipe($.size({ title: 'product images' }));
 }
 
 gulp.task('images', gulp.parallel(images, thirdPartyImages));
@@ -93,9 +75,9 @@ function copy() {
     '!app/*.html',
     'node_modules/apache-server-configs/dist/.htaccess'
   ], {
-    dot: true
-  }).pipe(gulp.dest('dist'))
-    .pipe($.size({title: 'copy'}));
+      dot: true
+    }).pipe(gulp.dest('dist'))
+    .pipe($.size({ title: 'copy' }));
 }
 
 gulp.task('copy', copy);
@@ -125,7 +107,7 @@ function styles() {
     .pipe(gulp.dest('.tmp/styles'))
     // Concatenate and minify styles
     .pipe($.if('*.css', $.cssnano()))
-    .pipe($.size({title: 'styles'}))
+    .pipe($.size({ title: 'styles' }))
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('dist/styles'));
 }
@@ -156,7 +138,7 @@ function html() {
     }))
 
     // Output files
-    .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
+    .pipe($.if('*.html', $.size({ title: 'html', showFiles: true })))
     .pipe(gulp.dest('dist'));
 }
 
@@ -180,15 +162,17 @@ function nodeMon(cb) {
   return nodemon({
     script: './server.js',
     watch: ['app/**/*.js'],
-    tasks: 'default'
-  }).on('start', () => {
-    if (!started) {
-      cb();
-      started = true;
-    }
-  }).on('restart', () => {
-    bs.reload();
-  });
+    tasks: 'default',
+  })
+    .on('start', () => {
+      if (!started) {
+        cb();
+        started = true;
+      }
+    })
+    .on('restart', () => {
+      bs.reload();
+    });
 }
 
 // browserSync
@@ -196,17 +180,18 @@ function serve() {
   return bs.init({
     proxy: 'http://localhost:8081',
     port: '8080',
-    open: false
+    open: false,
   });
 }
 
 // Build production files, the default task
-gulp.task('default',
+gulp.task(
+  'default',
   gulp.series(
     'clean',
     styles,
-    gulp.parallel(html, scripts, 'images', copy),
-    buildSw
+    gulp.parallel(html, scripts, 'images', copy)
+    // TODO - Add the build-sw task here
   )
 );
 
