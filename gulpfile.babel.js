@@ -57,7 +57,7 @@ function images() {
 }
 
 function thirdPartyImages() {
-  return gulp.src('../third_party/images/**/*')
+  return gulp.src('third_party/images/**/*')
     .pipe($.imagemin({ // DEBUG removed $.cache( before imagemin
       progressive: true,
       interlaced: true
