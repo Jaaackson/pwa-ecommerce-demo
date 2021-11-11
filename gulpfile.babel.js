@@ -196,8 +196,13 @@ function serve() {
   return bs.init({
     proxy: 'http://localhost:8081',
 <<<<<<< HEAD
+<<<<<<< HEAD
     port: '80',
     open: false,
+=======
+    port: '8080',
+    open: false
+>>>>>>> parent of 4922910 (test)
 =======
     port: '8080',
     open: false
