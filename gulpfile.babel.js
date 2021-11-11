@@ -179,7 +179,7 @@ function nodeMon(cb) {
 function serve() {
   return bs.init({
     proxy: 'http://localhost:8081',
-    port: '8080',
+    port: '80',
     open: false,
   });
 }
