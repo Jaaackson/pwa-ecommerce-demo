@@ -77,6 +77,15 @@ limitations under the License.
   line-height: 42px;
 }
 
+.portfolio-navigation-row .mdl-navigation__link3 {
+  color: #595A5B;
+  font-weight: normal;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  line-height: 42px;
+}
+
 .portfolio-header .mdl-layout__drawer-button {
     background-color: rgba(197, 197, 197, 0.44);
 }
